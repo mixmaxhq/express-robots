@@ -1,14 +1,10 @@
-var fs = require('fs');
-var asArray = require('as-array');
+const fs = require('fs');
+const castArray = require('lodash/castArray');
 
-if (!Array.isArray) {
-  Array.isArray = function(arg) {
-    return Object.prototype.toString.call(arg) === '[object Array]';
-  };
-}
+const asArray = (value = []) => castArray(value);
 
-module.exports = function(robots) {
-  var app = require('express')();
+module.exports = function(robots, {express = require('express')} = {}) {
+  const app = express();
 
   if(robots) {
     robots = 'string' === typeof robots
@@ -27,7 +23,7 @@ module.exports = function(robots) {
 
 function render(robots) {
   return asArray(robots).map(function(robot) {
-    var userAgentArray = [];
+    const userAgentArray = [];
     if (Array.isArray(robot.UserAgent)) {
       userAgentArray = robot.UserAgent.map(function(userAgent) {
         return 'User-agent: ' + userAgent
