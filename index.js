@@ -1,7 +1,6 @@
 const fs = require('fs');
-const castArray = require('lodash/castArray');
 
-const asArray = (value = []) => castArray(value);
+const asArray = (value = []) => Array.isArray(value) ? value : [value];
 
 module.exports = function(robots, {express = require('express')} = {}) {
   const app = express();
