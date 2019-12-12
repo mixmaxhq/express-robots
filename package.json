@@ -7,6 +7,7 @@
     "test": "test"
   },
   "scripts": {
+    "ci": "npm test",
     "ci:commitlint": "commitlint-jenkins --pr-only",
     "prepublishOnly": "if [ \"$CI\" = '' ]; then node -p 'JSON.parse(process.env.npm_package_config_manualPublishMessage)'; exit 1; fi",
     "semantic-release": "semantic-release",
