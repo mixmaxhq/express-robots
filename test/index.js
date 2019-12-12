@@ -2,10 +2,13 @@ var fs = require('fs');
 var expect = require('chai').expect;
 var supertest = require('supertest');
 var robots = require('../');
+var express = require('express');
 
 describe('express-robots', function() {
   it('should work', function(done) {
-    var request = supertest(robots({UserAgent: '*', Disallow: '/'}));
+    var app = express();
+    app.use(robots({UserAgent: '*', Disallow: '/'}));
+    var request = supertest(app);
     request
       .get('/robots.txt')
       .end(function(err, res) {
@@ -15,9 +18,11 @@ describe('express-robots', function() {
         done();
       });
   });
-  
+
   it('should work with a crawl delay', function(done) {
-    var request = supertest(robots({UserAgent: '*', CrawlDelay: '5'}));
+    var app = express();
+    app.use(robots({UserAgent: '*', CrawlDelay: '5'}));
+    var request = supertest(app);
     request
       .get('/robots.txt')
       .end(function(err, res) {
@@ -27,12 +32,14 @@ describe('express-robots', function() {
         done();
       });
   });
-  
+
   it('should work with multiple crawl delays', function(done) {
-    var request = supertest(robots([
-      {UserAgent: '*', CrawlDelay: '5'}, 
+    var app = express();
+    app.use(robots([
+      {UserAgent: '*', CrawlDelay: '5'},
       {UserAgent: 'Foo', CrawlDelay: '10'}
     ]));
+    var request = supertest(app);
     request
       .get('/robots.txt')
       .end(function(err, res) {
@@ -44,7 +51,9 @@ describe('express-robots', function() {
   });
 
   it('should work with files', function() {
-    var request = supertest(robots(__dirname + '/fixtures/robots.txt'));
+    var app = express();
+    app.use(robots(__dirname + '/fixtures/robots.txt'));
+    var request = supertest(app);
     request
       .get('/robots.txt')
       .end(function(err, res) {
@@ -54,7 +63,9 @@ describe('express-robots', function() {
   });
 
   it('should respond with an empty file if nothing is specified', function() {
-    var request = supertest(robots());
+    var app = express();
+    app.use(robots());
+    var request = supertest(app);
     request
       .get('/robots.txt')
       .end(function(err, res) {
