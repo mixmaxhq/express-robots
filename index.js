@@ -3,7 +3,7 @@ const fs = require('fs');
 const asArray = (value = []) => Array.isArray(value) ? value : [value];
 
 module.exports = function(robots, {express = require('express')} = {}) {
-  const app = express();
+  const app = express.Router();
 
   if(robots) {
     robots = 'string' === typeof robots
