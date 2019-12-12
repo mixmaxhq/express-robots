@@ -7,6 +7,9 @@
     "test": "test"
   },
   "scripts": {
+    "ci:commitlint": "commitlint-jenkins --pr-only",
+    "prepublishOnly": "if [ \"$CI\" = '' ]; then node -p 'JSON.parse(process.env.npm_package_config_manualPublishMessage)'; exit 1; fi",
+    "semantic-release": "semantic-release",
     "test": "mocha"
   },
   "repository": {
@@ -27,9 +30,31 @@
   "homepage": "https://github.com/mixmaxhq/express-robots",
   "dependencies": {},
   "devDependencies": {
+    "@commitlint/config-conventional": "^8.3.3",
+    "@mixmaxhq/commitlint-jenkins": "^1.4.1",
+    "@mixmaxhq/semantic-release-config": "^1.2.4",
     "chai": "^4.2.0",
+    "cz-conventional-changelog": "^3.0.2",
     "express": "^4.16.4",
     "mocha": "^5.2.0",
+    "semantic-release": "^15.13.31",
     "supertest": "^3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    },
+    "manualPublishMessage": "This repository is configured to use semantic-release for its releases. Please do not release manually.\n"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "release": {
+    "extends": "@mixmaxhq/semantic-release-config"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
