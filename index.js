@@ -22,7 +22,7 @@ module.exports = function(robots, {express = require('express')} = {}) {
 
 function render(robots) {
   return asArray(robots).map(function(robot) {
-    const userAgentArray = [];
+    let userAgentArray = [];
     if (Array.isArray(robot.UserAgent)) {
       userAgentArray = robot.UserAgent.map(function(userAgent) {
         return 'User-agent: ' + userAgent
